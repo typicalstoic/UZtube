@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+{% block main %}
+<div class="d-flex justify-content-between">
+    <div class="col-7">
+        <div class="card">
+            <div class="card-body">
+                <video controls preload="metadata" autoplay width="100%;">
+                    <source src="{{ content.get_video }}" type="video/mp4">
+                </video>
+                <div>
+                    <h3>{{ content.title }}</h3>
+                    <h5>
+                        <img src="https://cs6.pikabu.ru/avatars/308/v308326.jpg" alt="" width="50" height="50"
+                             class="rounded-circle"> User
+                    </h5>
+                    <div class="d-flex">
+                        <p>Views: {{ content.total_views }}</p>
+                        <p class="mx-5">Published at: {{ content.created_ad }}</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p>
+                        <a class="navbar-brand" data-bs-toggle="collapse" href="#collapseExample" role="button"
+                           aria-expanded="false" aria-controls="collapseExample">
+                            Read the description ...
+                        </a>
+                    </p>
+                    <div class="collapse" id="collapseExample">
+                        <div class="card card-body">
+                            {{ content.content|linebreaks }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Список комментариев -->
+        <div class="mt-5 comment_list">
+            {% for comment in comments %}
+            <div class="d-flex comment mt-3">
+                <img src="https://cs6.pikabu.ru/avatars/308/v308326.jpg" alt="" height="50px" width="50px"
+                     class="rounded-circle">
+
+                <div class="mx-3 text-light">
+                    <h6>{{ comment.user.username }} <span class="comment_date">{{ comment.created_at }}</span></h6>
+                    <p>{{ comment.text }}</p>
+                </div>
+
+                {% if comment.user == request.user %}
+                <div class="dropdown change">
+                    <button class="bg-black text-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-three-dots-vertical"></i>
+                    </button>
+                    <ul class="dropdown-menu bg-dark p-2">
+                        <li class="mb-2">
+                            <a class="text-light" href="{% url 'comment_delete' comment.pk %}">Delete</a>
+                        </li>
+                        <li class="mb-2">
+
+                            <a class="btn btn-link text-light" data-bs-toggle="collapse"
+                               data-bs-target="#edit-comment-{{ comment.pk }}" aria-expanded="false"
+                               aria-controls="edit-comment-{{ comment.pk }}">
+                                Edit
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Collapsible Edit Form for Each Comment -->
+            <div class="collapse mt-3" id="edit-comment-{{ comment.pk }}">
+                {% include 'uzbektube/components/_update_comment.html' with form=comment_form comment=comment %}
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Форма для добавления нового комментария -->
+        <div class="mt-5">
+            <h4 class="text-light">Leave a comment</h4>
+            <form action="{% url 'comment_save' content.pk %}" method="post" class="comment">
+                {% csrf_token %}
+                {{ comment_form.as_p }}
+                <button class="btn btn-dark text-light" type="submit">Leave a comment</button>
+            </form>
+        </div>
+
+    </div>
+
+    <div class="col-4">
+        <div class="d-flex flex-column">
+            <h4 class="text-center text-light">Recommendations</h4>
+            {% for item in items %}
+            <a href="{{ item.get_absolute_url }}" style="text-decoration:none;">
+                <div class="d-flex p-2 text-light mt-3">
+                    <img src="{{ item.get_image }}" alt="" width="170" height="120" class="rounded">
+                    <div class="mx-2">
+                        <p class="fw-bold">{{ item.name }}</p>
+                        <p>Author</p>
+                        <p>{{ item.total_views }} views <span> date of publication: </span> {{ item.created_ad }}</p>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock main %}

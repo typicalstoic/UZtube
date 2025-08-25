@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load uzbektube_tags %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+
+{% block main %}
+
+<div class="d-flex justify-content-center">
+
+    <div class="col-8">
+
+        <div class="d-flex">
+
+            <img src="{{ profile.get_profile_photo }}" alt="" height="100px" width="100px" class="rounded-circle">
+
+            <div class="mx-3" class="profile_info" style="color: white;">
+                <h4>{{ profile.name }}</h4>
+                <p>{{ profile.nick_name }}</p>
+
+                <p>
+                    <a class="text-light" data-bs-toggle="collapse" href="#collapseExample" role="button"
+                       aria-expanded="false" aria-controls="collapseExample">
+                        More about user...
+                    </a>
+
+                </p>
+                <div class="collapse" id="collapseExample">
+                    <div class="card p-2 bg-black text-light">
+                        <p class="mt-2">Name: {{ profile.user.first_name }}</p>
+                        <p class="mt-2">Last name: {{ profile.user.last_name }}</p>
+                        <p class="mt-2">Email: {{ profile.user.email }}</p>
+                    </div>
+                </div>
+
+                {% if request.user == profile.user %}
+                <div class="d-flex">
+                    <a href="{% url 'edit_account' %}" class="btn btn-dark">Change account</a>
+                    <a href="{% url 'edit_profile' %}" class="btn btn-dark mx-3">Change profile</a>
+                </div>
+                {% endif %}
+
+
+            </div>
+        </div>
+
+        <hr class="text-light ">
+        <h4 class="text-light mt-3">Videos</h4>
+
+         <div class="row row-cols-1 row-cols-md-3 g-3">
+            {% for content in contents %}
+            {% include 'uzbektube/components/_card.html' %}
+
+            {% endfor%}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock main %}

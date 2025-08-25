@@ -1,0 +1,29 @@
+<div class="col">
+    <a href="{{ content.get_absolute_url }}" style="text-decoration:None;">
+        <div class="card">
+
+            <img src="{{ content.get_image }}" class="rounded" height="200" alt="..." width="100%">
+
+            <div class="d-flex flex-column justify-content between p-2 text-dark" style="height: 150px">
+                <h5 class="card-title">{{ content.title |truncatechars:60 }}</h5>
+                <div class="d-flex justify-content-between">
+                    <p class="card-text mr-3">Author: {{ content.author }}</p>
+                    <p class="card-text">Views: {{ content.total_views }}</p>
+                </div>
+            </div>
+
+            {% if 'profile' in request.path %}
+            <div class="d-flex justify-content-end p-2">
+                <a href="{% url 'delete_content' content.pk %}" class="text-dark"><i class="bi bi-trash"></i> </a>
+                <a href="{% url 'update_content' content.pk %}" class="text-dark mx-2"><i
+                        class="bi bi-pencil-square"></i> </a>
+            </div>
+            {% endif %}
+
+
+        </div>
+    </a>
+</div>
+
+
+

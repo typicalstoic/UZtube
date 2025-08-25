@@ -1,0 +1,13 @@
+<form action="{% if is_update %}{% url 'comment_update' comment.pk %}{% else %}{% url 'comment_save' content.pk %}{% endif %}"
+      method="post" class="comment">
+    {% csrf_token %}
+    {{ comment_form.as_p }}
+
+    <button class="btn btn-dark text-light" type="submit">
+        {% if is_update %}
+        Save changes
+        {% else %}
+           Save changes
+        {% endif %}
+    </button>
+</form>

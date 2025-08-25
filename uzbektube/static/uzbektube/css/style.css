@@ -1,0 +1,53 @@
+*{
+    text-decoration: none !important;
+}
+
+
+body{
+    background: black !important;
+}
+
+
+.comment textarea{
+    background: black !important;
+    color: white !important;
+    height: 20px;
+    border: none;
+    border-bottom: 1px solid white;
+    margin-top: 25px;
+
+}
+
+.comment textarea::placeholder{
+    color: white  !important;
+}
+
+.comment_date{
+    font-size: 13px;
+}
+
+.comment{
+    position: relative;
+}
+
+.change{
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.change button{
+    border: none;
+}
+
+.change_profile div{
+    display: none;
+}
+
+.change_profile p  label:last-child{
+    display: none;
+}
+
+.helptext{
+    display: none;
+}
